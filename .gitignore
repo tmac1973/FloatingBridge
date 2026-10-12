@@ -1,0 +1,9 @@
+bin/
+obj/
+dist/
+*.user
+FloatingBridge.user.props
+.idea/
+.vs/
+.mtb
+.claude/settings.local.json

@@ -1,0 +1,10 @@
+{
+  "name": "FloatingBridge",
+  "version_number": "0.1.0",
+  "website_url": "https://github.com/tmac1973/FloatingBridge",
+  "description": "Adds a pontoon to the hammer: a wooden deck that floats at water level, never rots in the wet, and holds up floors and railings like a foundation. Build bridges across lakes and bays.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2350",
+    "ValheimModding-Jotunn-2.30.1"
+  ]
+}

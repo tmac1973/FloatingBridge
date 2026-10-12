@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>FloatingBridge</AssemblyName>
+    <RootNamespace>FloatingBridge</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputPath>bin/$(Configuration)/</OutputPath>
+    <!-- Keep in sync with package/manifest.json and Plugin.Version; the Package target checks all three. -->
+    <Version>0.1.0</Version>
+    <RepoRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../'))</RepoRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" />
+    <!-- build assets excluded: JotunnLib's props inject ~80 Valheim references that clash with ours. -->
+    <PackageReference Include="JotunnLib" Version="2.30.1" ExcludeAssets="runtime;build" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx" HintPath="$(BepInExCoreDir)/BepInEx.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(BepInExCoreDir)/0Harmony.dll" Private="false" />
+
+    <Reference Include="assembly_valheim" HintPath="$(ManagedDir)/assembly_valheim.dll" Private="false" Publicize="true" />
+    <Reference Include="assembly_utils" HintPath="$(ManagedDir)/assembly_utils.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="$(ManagedDir)/UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(ManagedDir)/UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(ManagedDir)/UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="UnityEngine.ScreenCaptureModule" HintPath="$(ManagedDir)/UnityEngine.ScreenCaptureModule.dll" Private="false" />
+    <Reference Include="UnityEngine.AssetBundleModule" HintPath="$(ManagedDir)/UnityEngine.AssetBundleModule.dll" Private="false" />
+  </ItemGroup>
+
+  <!-- Copy the built plugin into the Gale dev profile. -->
+  <Target Name="DeployToGale" AfterTargets="Build" Condition="Exists('$(PluginsDir)')">
+    <ItemGroup>
+      <DeployFiles Include="$(TargetPath)" />
+      <DeployFiles Include="$(TargetDir)$(TargetName).pdb" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DeployFiles)" DestinationFolder="$(PluginsDir)/Spronglehump-FloatingBridge" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="FloatingBridge deployed to $(PluginsDir)/Spronglehump-FloatingBridge" />
+  </Target>
+
+  <!-- Thunderstore/Hexium zip: dotnet build -c Release -t:Package -->
+  <Target Name="Package" DependsOnTargets="Build">
+    <PropertyGroup>
+      <ManifestVersion>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(RepoRoot)package/manifest.json')), '"version_number"\s*:\s*"([^"]+)"').Groups[1].Value)</ManifestVersion>
+      <PluginVersion>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(MSBuildThisFileDirectory)Plugin.cs')), 'Version\s*=\s*"([^"]+)"').Groups[1].Value)</PluginVersion>
+      <PackageStage>$(MSBuildThisFileDirectory)obj/package/</PackageStage>
+      <PackageZip>$(RepoRoot)dist/Spronglehump-FloatingBridge-$(Version).zip</PackageZip>
+    </PropertyGroup>
+    <Error Condition="'$(ManifestVersion)' != '$(Version)' Or '$(PluginVersion)' != '$(Version)'"
+           Text="Version mismatch: csproj $(Version), manifest.json $(ManifestVersion), Plugin.Version $(PluginVersion)" />
+
+    <RemoveDir Directories="$(PackageStage)" />
+    <Copy SourceFiles="$(RepoRoot)package/manifest.json;$(RepoRoot)package/icon.png;$(RepoRoot)README.md;$(RepoRoot)CHANGELOG.md"
+          DestinationFolder="$(PackageStage)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PackageStage)plugins" />
+    <MakeDir Directories="$(RepoRoot)dist" />
+    <ZipDirectory SourceDirectory="$(PackageStage)" DestinationFile="$(PackageZip)" Overwrite="true" />
+    <Message Importance="high" Text="Packaged $(PackageZip)" />
+  </Target>
+
+</Project>

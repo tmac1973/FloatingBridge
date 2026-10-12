@@ -1,0 +1,7 @@
+<!-- Copy to FloatingBridge.user.props (git-ignored) to override local paths. -->
+<Project>
+  <PropertyGroup>
+    <ValheimDir>/games/SteamLibrary/steamapps/common/Valheim</ValheimDir>
+    <GaleProfileDir>$(HOME)/.local/share/com.kesomannen.gale/valheim/profiles/floatingbridge-dev</GaleProfileDir>
+  </PropertyGroup>
+</Project>

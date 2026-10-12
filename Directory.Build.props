@@ -1,0 +1,13 @@
+<Project>
+  <!-- Optional per-machine overrides (git-ignored). See FloatingBridge.user.props.example. -->
+  <Import Project="$(MSBuildThisFileDirectory)FloatingBridge.user.props" Condition="Exists('$(MSBuildThisFileDirectory)FloatingBridge.user.props')" />
+
+  <PropertyGroup>
+    <ValheimDir Condition="'$(ValheimDir)' == ''">/games/SteamLibrary/steamapps/common/Valheim</ValheimDir>
+    <GaleProfileDir Condition="'$(GaleProfileDir)' == ''">$(HOME)/.local/share/com.kesomannen.gale/valheim/profiles/floatingbridge-dev</GaleProfileDir>
+
+    <ManagedDir>$(ValheimDir)/valheim_Data/Managed</ManagedDir>
+    <BepInExCoreDir>$(GaleProfileDir)/BepInEx/core</BepInExCoreDir>
+    <PluginsDir>$(GaleProfileDir)/BepInEx/plugins</PluginsDir>
+  </PropertyGroup>
+</Project>
