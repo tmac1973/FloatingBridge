@@ -1,6 +1,5 @@
 # FloatingBridge
 
-> [!NOTE]
 > **This is a small, low-effort mod, not a polished one.** It does one thing, has only been tested in single player so far, and reuses vanilla art: the pontoon is the wood floor with two log poles stuck under it. Expect rough edges.
 
 Build bridges across lakes and bays. FloatingBridge adds a **Pontoon** to the hammer: a 2×2 wooden deck on two logs that sits on the water. Water holds it up the way the ground holds up a foundation, so you can build floors, railings and walls off it.
