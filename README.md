@@ -1,5 +1,8 @@
 # FloatingBridge
 
+> [!NOTE]
+> **This is a small, low-effort mod, not a polished one.** It does one thing, has only been tested in single player so far, and reuses vanilla art: the pontoon is the wood floor with two log poles stuck under it. Expect rough edges.
+
 Build bridges across lakes and bays. FloatingBridge adds a **Pontoon** to the hammer: a 2×2 wooden deck on two logs that sits on the water. Water holds it up the way the ground holds up a foundation, so you can build floors, railings and walls off it.
 
 ## Requirements
@@ -34,7 +37,7 @@ What a pontoon does:
 
 - **Removing the mod breaks your bridges.** Without the mod, placed pontoons don't load (they stay in the save and come back if you reinstall), and anything they were holding up collapses, for good, the next time that area loads. Take bridges down before you uninstall.
 - Boats can't pass under a pontoon bridge. Leave a gap, or build a raised section on land.
-- In heavy storms, high waves can wash over a low deck and you'll swim. Raise *Deck height above water* for new pontoons.
+- In heavy storms, high waves can wash over a low deck and you'll swim. To avoid that, raise *Deck height above water*. The height is fixed when a pontoon is placed, so changing the setting doesn't move pontoons you've already built: to raise an existing bridge, take its pontoons down and place them again.
 - All Valheim water is at the same sea level, so this works the same in lakes, rivers and the ocean.
 
 ## Source
